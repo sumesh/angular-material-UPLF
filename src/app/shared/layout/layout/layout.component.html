@@ -1,0 +1,52 @@
+<div class="layout-container">
+  <app-top-nav (sideNavToggled)="snav.toggle()"></app-top-nav>
+
+  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="toolBarHeight">
+    <mat-sidenav #snav class="sidenav mat-elevation-z10" [mode]="sideNavMode" [(opened)]="sideNavOpened"  (click)="snav.toggle()" color="primary">
+      <app-side-nav></app-side-nav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <main class="main-container">
+        <app-breadcrumb></app-breadcrumb>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="space-between stretch">
+          <div fxFlex="49" fxFlex.gt-md="30">
+            <div fxLayout="row nowrap"    fxLayoutAlign="space-between stretch">
+              <mat-form-field fxFlex="49" >
+                <mat-select [(value)]="buckettypeval" placeholder="Bucket Type"> 
+                  <mat-option value="ML">Most Likely(ML+BL)</mat-option>
+                  <mat-option value="BL">Backlog</mat-option>
+                  <mat-option value="UP">Upside</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex="49">
+                <mat-select  [(value)]="servicelineval"  placeholder="Serviceline">
+                  <mat-option value="0">All Serviceline</mat-option>
+                  <mat-option value="85">ADM</mat-option>
+                  <mat-option value="8">QEA</mat-option>
+                  <mat-option value="25">CIS</mat-option>
+                </mat-select>
+              </mat-form-field> 
+            </div>
+          </div>
+          <div fxFlex="49" fxFlex.gt-md="30"> 
+             <div fxLayout="row nowrap"  fxLayoutAlign="space-between stretch">
+              <mat-form-field fxFlex="49"  >
+                <mat-select [(value)]="searchfilterval" placeholder="Select">
+                  <mat-option value="All">All</mat-option>
+                  <mat-option value="Account">Account</mat-option>
+                  <mat-option value="Project">Project</mat-option> 
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field  fxFlex="49">              
+                <input matInput placeholder="Search">
+                <mat-icon matSuffix>search</mat-icon> 
+              </mat-form-field>
+             </div>
+          </div> 
+        </div>
+        <mat-divider></mat-divider>
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

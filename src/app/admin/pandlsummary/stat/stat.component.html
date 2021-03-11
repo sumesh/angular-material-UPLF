@@ -3,10 +3,8 @@
 <ng-container  *ngFor="let item of summary; let i = index">
   <mat-card fxFlex="20" fxFlex.lt-md="49"  class="mb10" *ngIf="i<=displaycount">
     <mat-card-header >
-      <mat-card-title >
-        <div fxLayout="row nowrap"   fxLayoutAlign="space-between">
-        <h3 class="m-0">{{item.head}}</h3>
-      </div>
+      <mat-card-title > 
+        {{item.head}}  
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>

@@ -14,7 +14,7 @@ const routes: Routes = [
     path: 'acntworkbook',
     loadChildren: () =>
     import('../workbook/workbook.module').then(m => m.WorkbookModule), 
-    data: { breadcrumb: 'Account Workbook 2' }
+    data: { breadcrumb: 'Account Workbook' }
   }
 ];
 

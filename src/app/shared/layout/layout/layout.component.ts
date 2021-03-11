@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
-import { MatDrawerMode } from '@angular/material/sidenav';
+import { MatDrawerMode, MatSidenav } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -9,7 +9,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit, OnDestroy {
+  // @ViewChild('sidemenu') snav: MatSidenav;;
+  // @ViewChild('sidemenu') snavright: MatSidenav;;
   sideNavOpened = true;
+  rightsideNavOpened=false;
   sideNavMode: MatDrawerMode = 'over';
   toolBarHeight = 64;
   buckettypeval='ML';
@@ -21,10 +24,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
       if (change.mqAlias === 'sm' || change.mqAlias === 'xs') {
         if (this.sideNavOpened) {
           this.sideNavOpened = false;
+          this.rightsideNavOpened=false;
         }
         this.sideNavMode = 'over';
       } else {
         this.sideNavOpened = false;
+        this.rightsideNavOpened=false;
         this.sideNavMode = 'over';
       }
       if (change.mqAlias === 'xs') {

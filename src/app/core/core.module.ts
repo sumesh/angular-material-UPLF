@@ -1,8 +1,9 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { LayoutModuleModule } from '../layout/layout.module';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [SharedModule,LayoutModuleModule],
   declarations: []
 })
 export class CoreModule {

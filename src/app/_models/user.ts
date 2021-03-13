@@ -1,4 +1,4 @@
-﻿import { Role } from "./role";
+﻿import { Role, Roles } from "./role";
 
 export class User {
     id?: number;
@@ -8,4 +8,12 @@ export class User {
     lastName?: string;
     role?: Role;
     token?: string;
+    roles?:Roles[];
 }
+
+
+export class Session {
+    Identity?:User
+    Role?:Roles;
+}
+

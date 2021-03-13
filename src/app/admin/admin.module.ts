@@ -9,19 +9,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AdminRoutingModule } from './admin-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
   imports: [
-    CommonModule,
-    AdminRoutingModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatListModule
+    SharedModule,
+    AdminRoutingModule
   ],
   declarations: []
 })

@@ -3,11 +3,28 @@ import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTT
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-import { User, Role } from '../_models';
+import { User, Role, Serviceline } from '../_models';
 
 const users: User[] = [
-    { id: 1, username: 'admin', password: 'admin', firstName: 'Admin', lastName: 'User', role: Role.Admin },
-    { id: 2, username: 'user', password: 'user', firstName: 'Normal', lastName: 'User', role: Role.User }
+    {
+        id: 147852, username: '147852', firstName: 'Admin', role:
+            Role.Admin,
+        roles: [
+            { roleid: 'RH001', rolename: 'Account Manager', roletype: 'VT' },
+            { roleid: 'RH002', rolename: 'SLM', roletype: 'HZ' }
+        ]
+    },
+    {
+        id: 369852, username: '369852', firstName: 'RHMS', role: Role.Admin,
+        roles: [
+            { roleid: 'RH003', rolename: 'Delivery Patner', roletype: 'VT' },
+            { roleid: 'RH002', rolename: 'SLM', roletype: 'VT' }
+        ]
+    }
+];
+
+const servicelinesArr:Serviceline[]=[
+    {horzid:8,HorzName:'QEA'},{horzid:85,HorzName:'ADM'},{horzid:25,HorzName:'CIS'},{horzid:88,HorzName:'EAS'},
 ];
 
 @Injectable()
@@ -26,6 +43,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             switch (true) {
                 case url.endsWith('/users/authenticate') && method === 'POST':
                     return authenticate();
+                case url.endsWith('/users/roles') && method === 'GET':
+                        return userroles();
+                    case url.endsWith('/master/serviceline') && method === 'GET':
+                        return servicelines();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
                 case url.match(/\/users\/\d+$/) && method === 'GET':
@@ -43,7 +64,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             const { username, password } = body;
             const user = users.find(x => x.username === username && x.password === password);
             if (!user) return error('Username or password is incorrect');
-          
+
             return ok({
                 id: user.id,
                 username: user.username,
@@ -52,6 +73,21 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 role: user.role,
                 token: `fake-jwt-token.${user.id}`
             });
+        }
+
+        function userroles() {
+            if (!isLoggedIn()) return unauthorized();
+
+            // only admins can access other user records
+            if (!isAdmin() && currentUser()?.id !== idFromUrl()) return unauthorized();
+
+            const user = users.find(x => x.id === currentUser()?.id);
+            return ok(user?.roles);
+        }
+
+        function servicelines() {
+            if (!isLoggedIn()) return unauthorized();  
+            return ok(servicelinesArr);
         }
 
         function getUsers() {
@@ -71,7 +107,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         // helper functions
 
-        function ok(body:any) {
+        function ok(body: any) {
             return of(new HttpResponse({ status: 200, body }));
         }
 
@@ -79,7 +115,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return throwError({ status: 401, error: { message: 'unauthorized' } });
         }
 
-        function error(message:string) {
+        function error(message: string) {
             return throwError({ status: 400, error: { message } });
         }
 
@@ -94,7 +130,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function currentUser() {
             if (!isLoggedIn()) return;
-            const id = parseInt((headers.get('Authorization')||'').split('.')[1]);
+            const id = parseInt((headers.get('Authorization') || '').split('.')[1]);
             return users.find(x => x.id === id);
         }
 

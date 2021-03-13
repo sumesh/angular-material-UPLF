@@ -9,11 +9,12 @@ import { CoreModule } from './core/core.module';
 import { ErrorInterceptor, JwtInterceptor } from './_helpers';
 import { fakeBackendProvider } from './_helpers/fake-backend';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule, 
     AppRoutingModule,
     HttpClientModule,
     CoreModule  

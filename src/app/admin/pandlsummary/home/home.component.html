@@ -33,7 +33,7 @@
 </div> -->
 <div fxLayout="row nowrap" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px" fxLayoutGap.lt-sm="0px">
  <div fxFlex class="pt10">
-   Summary Overview
+   Summary Overview {{role}} {{lastupdated}}
  </div>
   <div fxFlex >
     <div fxLayout="row nowrap" fxLayoutAlign="end"  >
@@ -42,6 +42,9 @@
     </div>
   </div>
 </div> 
+
+  <app-serviceline  [servicelineID]="servicelineid" [isMultple]="true"
+  (servicelineChanges)="onServicelineChanged($event)" ></app-serviceline>
   <app-stat [summary]="summarylist" ></app-stat>
  
  

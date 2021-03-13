@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardChild } from '../_helpers/auth.guard';
-import { LayoutComponent } from '../shared/layout/layout/layout.component';
+import { LayoutComponent } from '../layout/masterlayout/layout.component';
  
 import { childRoutes } from './child-routes';
 

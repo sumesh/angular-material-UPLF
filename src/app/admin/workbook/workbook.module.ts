@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { FormsModule , ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
@@ -36,9 +35,6 @@ import { PPMComponent } from './ppm/ppm.component';
     WorkbookRoutingModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FlexLayoutModule,
     MatTabsModule, 
     MatFormFieldModule,
     MatInputModule,

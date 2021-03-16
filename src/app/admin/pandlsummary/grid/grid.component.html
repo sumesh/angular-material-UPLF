@@ -1,45 +1,43 @@
-<div fxLayout="row wrap" fxLayout.xs="column"   fxLayoutAlign="space-between center" fxLayoutAlign.lt-sm="space-between stretch" >
-  <div fxFlex="35"  >
-    <div fxLayout="row wrap" fxLayoutAlign="space-between start" >
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-between center"
+  fxLayoutAlign.lt-sm="space-between stretch">
+  <div fxFlex="35">
+    <div fxLayout="row wrap" fxLayoutAlign="space-between start">
       <mat-form-field fxFlex="49">
-        <mat-select [(value)]="ddlPeriodval"  placeholder="Filter"> 
-          <mat-option value="1">Monthly</mat-option>
-          <mat-option value="2">Quarterly</mat-option>
-          <mat-option value="3">Yearly</mat-option>
+        <mat-select [(value)]="ddlPeriodval" placeholder="Filter">
+          <mat-option value="{{r.id}}" *ngFor="let r of gridMaster.filtertype">{{ r.value }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field fxFlex="49">
-        <mat-select  [(value)]="ddlyearVal" placeholder="Year">         
-          <mat-option value="2021">2021</mat-option>
-          <mat-option value="2022">2022</mat-option>
-          <mat-option value="2020">2020</mat-option>
+        <mat-select [(value)]="ddlyearVal" placeholder="Year">
+          <mat-option value="{{r.id}}" *ngFor="let r of gridMaster.year">{{ r.value }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
   </div>
-  <div   class="pt20">
-      <mat-label>FX : </mat-label>
-      <mat-radio-group color="primary"  [(ngModel)]="rdFxVal">
-        <mat-radio-button value="1">Contant</mat-radio-button>
-        <mat-radio-button value="2">Reported</mat-radio-button>
-      </mat-radio-group>
-   
+  <div class="pt20">
+    <mat-label>FX : </mat-label>
+    <mat-radio-group color="primary" [(ngModel)]="rdFxVal">
+      <mat-radio-button value="{{r.id}}" *ngFor="let r of gridMaster.fx">{{ r.value }}
+      </mat-radio-button>
+    </mat-radio-group>
+
   </div>
-  <div     class="pt20">
-    
-      <mat-label>USD : </mat-label>
-      <mat-radio-group color="primary"  [(ngModel)]="rdCurval" >
-        <mat-radio-button value="1">Bn</mat-radio-button>
-        <mat-radio-button value="2">Mn</mat-radio-button>
-        <mat-radio-button value="3">K</mat-radio-button>
-      </mat-radio-group>
-     
+  <div class="pt20">
+
+    <mat-label>USD : </mat-label>
+    <mat-radio-group color="primary" [(ngModel)]="rdCurval">
+      <mat-radio-button value="{{r.id}}" *ngFor="let r of gridMaster.dol">{{ r.value }}
+      </mat-radio-button>
+    </mat-radio-group>
+
   </div>
-  <div  class="pt20"  >
-    <button mat-icon-button color="primary" aria-label="Example icon button with a menu icon">
+  <div class="pt20">
+    <button mat-icon-button color="primary" aria-label="Prev" (click)="prevPeriod()">
       <mat-icon class="icon-lg">keyboard_arrow_left</mat-icon>
     </button>
-    <button mat-icon-button color="primary" aria-label="Example icon button with a menu icon">
+    <button mat-icon-button color="primary" aria-label="Next" (click)="nextPeriod()">
       <mat-icon class="icon-lg">keyboard_arrow_right</mat-icon>
     </button>
   </div>
@@ -48,21 +46,55 @@
   <table class="table">
     <thead>
       <tr>
-      <th>&nbsp;</th>
-      <th>YTD 2021</th>
-      <th>Jan 2021</th>
-      <th>Feb 2021</th>
-      <th>Mar 2021</th>
-      <th>Apr 2021</th>
-      <th>May 2021</th>
-      <th>Jun 2021</th>
-      <th>FY 2021</th>    
-    </tr> 
+        <th>&nbsp;</th>
+        <th *ngFor="let row of gridMaster.header | callback:filtermonths; let i = index">
+          {{row.PeriodName}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let desc of gridMaster.desc; let i = index" [ngClass]="{subhead: desc.Type=='H'}">
+
+        <ng-container *ngIf="desc.Type=='H'">
+          <th>{{desc.Desc}}</th>
+          <th *ngFor="let pr of gridMaster.header | callback:filtermonths; let j = index">
+            <span *ngIf="desc.Type=='H'"></span>
+          </th>
+        </ng-container>
+
+        <ng-container *ngIf="desc.Type!='H'">
+          <td>{{desc.Desc}}</td>
+          <td *ngFor="let pr of gridMaster.header | callback:filtermonths; let j = index">
+            <span *ngIf="desc.Type!='H' && !gridloading && desc.Format=='$'"
+              title="{{getTableData(desc.DescID,pr.PeriodID,'Value') | currency}}">
+              {{getTableData(desc.DescID,pr.PeriodID,'Value')/rdCurval | currency}}</span>
+            <span *ngIf="desc.Type!='H' && !gridloading  && desc.Format=='%'"
+              title="{{getTableData(desc.DescID,pr.PeriodID,'Value') | percent:'1.2-6'}}">
+              {{getTableData(desc.DescID,pr.PeriodID,'Value') | percent:'1.2-2'}}</span>
+            <div class="tdloading" *ngIf="gridloading">&nbsp;</div>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th>YTD 2021</th>
+        <th>Jan 2021</th>
+        <th>Feb 2021</th>
+        <th>Mar 2021</th>
+        <th>Apr 2021</th>
+        <th>May 2021</th>
+        <th>Jun 2021</th>
+        <th>FY 2021</th>
+      </tr>
     </thead>
     <tbody>
       <tr class="subhead">
         <th colspan="10">Forecast</th>
-      </tr> 
+      </tr>
       <tr>
         <td>Rev $</td>
         <td>11,22,33.56</td>
@@ -98,7 +130,7 @@
       </tr>
       <tr class="subhead">
         <th colspan="10">Adjustment</th>
-      </tr> 
+      </tr>
       <tr>
         <td>Rev $</td>
         <td>11,22,33.56</td>
@@ -136,4 +168,3 @@
 
   </table>
 </div>
- 

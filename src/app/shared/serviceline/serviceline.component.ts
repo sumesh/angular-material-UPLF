@@ -23,11 +23,13 @@ export class ServicelineComponent implements OnInit {
   constructor( private masterdata: MasterDataService) {}
 
   ngOnInit() {
+
       this.getServiceline();
   }
 
   getServiceline()
   {
+    console.log("Serviceline loading");
     this.masterdata.getServicelines().subscribe(s => {       
         this.servicelines = s;
       });

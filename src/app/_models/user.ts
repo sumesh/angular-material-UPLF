@@ -17,3 +17,19 @@ export class Session {
     Role?:Roles;
 }
 
+export class InputData
+{
+    roleid?:string;
+    horzid?:string;
+    subhorzid?:string;
+    entitytype?:string;
+    entityid?:string;
+    buckettype?:string;
+}
+
+export class MasterDropdown{
+   id?:string;
+   value?:string;
+   isdefault?:boolean;
+}
+

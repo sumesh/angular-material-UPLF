@@ -9,6 +9,7 @@ import { RouterTab } from './router-tab/router-tab.directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ServicelineComponent } from './serviceline/serviceline.component';
+import { CallbackPipe } from './filter/callback.filter';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { ServicelineComponent } from './serviceline/serviceline.component';
     PageNotFoundComponent,
     ServicelineComponent,
     RouterTabs,
-    RouterTab    
+    RouterTab ,
+    CallbackPipe   
   ],
   exports: [
     CommonModule,
@@ -38,7 +40,8 @@ import { ServicelineComponent } from './serviceline/serviceline.component';
     PageNotFoundComponent,
     RouterTabs,
     RouterTab,
-    ServicelineComponent
+    ServicelineComponent,
+    CallbackPipe
   ]
 })
 export class SharedModule { }

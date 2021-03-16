@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
-import {  Session } from '../_models';
+import { Session, InputData } from '../_models';
 import { AuthenticationService } from './authentication.service';
 
 
@@ -14,29 +14,29 @@ export class MasterDataService {
     //session data service
     private sessionSubject: BehaviorSubject<Session>;
     public commonSessionObjs: Observable<Session>;
-    
+
     //serviceline list
 
-    
-    private subscriptionlist: Subscription[]=[];
+
+    private subscriptionlist: Subscription[] = [];
 
     constructor(private http: HttpClient
-        , private authenticationService: AuthenticationService) { 
+        , private authenticationService: AuthenticationService) {
         this.sessionSubject = new BehaviorSubject<Session>({});
         this.commonSessionObjs = this.sessionSubject.asObservable();
 
-        var subscription1:Subscription = this.authenticationService.activeRole.subscribe(r => {
+        var subscription1: Subscription = this.authenticationService.activeRole.subscribe(r => {
             console.log('master Service contructor Roles', r, this.authenticationService.activeRoleValue);
             this.setSessionValues();
         });
 
-        var subscription2:Subscription = this.authenticationService.currentUser.subscribe(r => {
+        var subscription2: Subscription = this.authenticationService.currentUser.subscribe(r => {
             console.log('master Service contructor user', r, this.authenticationService.currentUser);
             this.setSessionValues();
         });
 
-          this.subscriptionlist.push(subscription1);
-          this.subscriptionlist.push(subscription2);
+        this.subscriptionlist.push(subscription1);
+        this.subscriptionlist.push(subscription2);
     }
 
     public get commonSession(): Session {
@@ -45,7 +45,7 @@ export class MasterDataService {
 
     private setSessionValues() {
         let cursession: Session = {
-            Identity:this.authenticationService.currentUserValue,
+            Identity: this.authenticationService.currentUserValue,
             Role: this.authenticationService.activeRoleValue
         };
 
@@ -61,6 +61,43 @@ export class MasterDataService {
                 // login successful if there's a jwt token in the response 
                 // store user details and jwt token in local storage to keep user logged in between page refreshes 
                 return servicelines;
+            }));
+    }
+
+    getPandLSummary(obj: InputData) {
+        return this.http.post<any>(`${environment.apiUrl}/pandl/summary`, obj)
+            .pipe(map(ret => {
+                // login successful if there's a jwt token in the response 
+                // store user details and jwt token in local storage to keep user logged in between page refreshes 
+                return ret;
+            }));
+    }
+
+    getBucketType(obj: InputData) {
+        return this.http.post<any>(`${environment.apiUrl}/master/buckettype`, obj)
+            .pipe(map(ret => {
+                // login successful if there's a jwt token in the response 
+                // store user details and jwt token in local storage to keep user logged in between page refreshes 
+                return ret;
+            }));
+    }
+
+    getPandLgridmaster(obj: InputData) {
+        return this.http.post<any>(`${environment.apiUrl}/pandl/gridmaster`, obj)
+            .pipe(map(ret => {
+                // login successful if there's a jwt token in the response 
+                // store user details and jwt token in local storage to keep user logged in between page refreshes 
+                return ret;
+            }));
+    }
+
+    
+    getPandLGridData(obj: InputData) {
+        return this.http.post<any>(`${environment.apiUrl}/pandl/griddata`, obj)
+            .pipe(map(ret => {
+                // login successful if there's a jwt token in the response 
+                // store user details and jwt token in local storage to keep user logged in between page refreshes 
+                return ret;
             }));
     }
 }

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module'; 
 import { ErrorInterceptor, JwtInterceptor } from './_helpers';
 import { fakeBackendProvider } from './_helpers/fake-backend';
+ 
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import { fakeBackendProvider } from './_helpers/fake-backend';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
+     {provide: DEFAULT_CURRENCY_CODE, useValue: 'USD'} ,
     // provider used to create fake backend
     fakeBackendProvider
 

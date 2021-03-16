@@ -56,46 +56,25 @@
             <mat-option *ngFor="let r of roles" value="{{r.roleid}}">{{r.rolename}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field fxFlex="100" *ngIf="selectedRole?.roletype=='HZ'">
+        <!-- <mat-form-field fxFlex="100" >
           <mat-select [(value)]="roleservicelineval" placeholder="Serviceline">
             <mat-option value="0">All Serviceline</mat-option>
             <mat-option value="85">ADM</mat-option>
             <mat-option value="8">QEA</mat-option>
             <mat-option value="25">CIS</mat-option>
           </mat-select>
-        </mat-form-field> 
-          <app-serviceline fxFlex="100" [isMultple]="true" ></app-serviceline>
+        </mat-form-field>  -->
+          <app-serviceline fxFlex="100" *ngIf="selectedRole?.roletype=='HZ'" ></app-serviceline>
         
       </div>
     </mat-sidenav>
     <mat-sidenav-content>
       <main class="main-container">
         <app-breadcrumb></app-breadcrumb>
-        <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="space-between stretch">
+        <div fxLayout="row nowrap" fxLayout.lt-sm="row nowrap" fxLayoutAlign="space-between stretch">
           <div fxFlex="49" fxFlex.gt-md="30">
             <div fxLayout="row nowrap" fxLayoutAlign="space-between stretch">
-              <mat-form-field fxFlex="49" appearance="fill">
-
-                <mat-select [(value)]="buckettypeval">
-                  <mat-option value="ML">Most Likely(ML+BL)</mat-option>
-                  <mat-option value="BL">Backlog</mat-option>
-                  <mat-option value="UP">Upside</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field fxFlex="49" appearance="fill">
-
-                <mat-select [(value)]="servicelineval">
-                  <mat-option value="0">All Serviceline</mat-option>
-                  <mat-option value="85">ADM</mat-option>
-                  <mat-option value="8">QEA</mat-option>
-                  <mat-option value="25">CIS</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-          <div fxFlex="49" fxFlex.gt-md="30">
-            <div fxLayout="row nowrap" fxLayoutAlign="space-between stretch">
-              <mat-form-field fxFlex="49">
+              <mat-form-field fxFlex="35">
                 <mat-label>Serviceline</mat-label>
                 <mat-select [(value)]="searchfilterval">
                   <mat-option value="All">All</mat-option>
@@ -103,13 +82,22 @@
                   <mat-option value="Project">Project</mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field fxFlex="49" appearance="fill">
-
+              <mat-form-field fxFlex="65">
                 <input matInput placeholder="Search">
                 <mat-icon matSuffix>search</mat-icon>
               </mat-form-field>
             </div>
           </div>
+
+          <div fxFlex="49" fxFlex.gt-md="30">
+            <div fxLayout="row nowrap" fxLayoutAlign="end">
+              <div class="revenue-coverage">
+                <div class="pgrs-text">RC - 40%</div>
+                <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+              </div> 
+            </div>
+          </div>
+ 
         </div>
         <mat-divider></mat-divider>
         <router-outlet></router-outlet>

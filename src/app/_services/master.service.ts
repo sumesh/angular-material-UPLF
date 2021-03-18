@@ -26,12 +26,12 @@ export class MasterDataService {
         this.commonSessionObjs = this.sessionSubject.asObservable();
 
         var subscription1: Subscription = this.authenticationService.activeRole.subscribe(r => {
-            console.log('master Service contructor Roles', r, this.authenticationService.activeRoleValue);
+            //console.log('master Service contructor Roles', r, this.authenticationService.activeRoleValue);
             this.setSessionValues();
         });
 
         var subscription2: Subscription = this.authenticationService.currentUser.subscribe(r => {
-            console.log('master Service contructor user', r, this.authenticationService.currentUser);
+          //  console.log('master Service contructor user', r, this.authenticationService.currentUser);
             this.setSessionValues();
         });
 
@@ -91,9 +91,28 @@ export class MasterDataService {
             }));
     }
 
+    getPandLgridmasterV2(obj: InputData) {
+        return this.http.post<any>(`${environment.apiUrl}/pandl2/gridmaster`, obj)
+            .pipe(map(ret => {
+                // login successful if there's a jwt token in the response 
+                // store user details and jwt token in local storage to keep user logged in between page refreshes 
+                return ret;
+            }));
+    }
+
     
     getPandLGridData(obj: InputData) {
         return this.http.post<any>(`${environment.apiUrl}/pandl/griddata`, obj)
+            .pipe(map(ret => {
+                // login successful if there's a jwt token in the response 
+                // store user details and jwt token in local storage to keep user logged in between page refreshes 
+                return ret;
+            }));
+    }
+
+    
+    getPandLGridDataV2(obj: InputData) {
+        return this.http.post<any>(`${environment.apiUrl}/pandl2/griddata`, obj)
             .pipe(map(ret => {
                 // login successful if there's a jwt token in the response 
                 // store user details and jwt token in local storage to keep user logged in between page refreshes 

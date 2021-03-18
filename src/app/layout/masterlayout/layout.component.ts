@@ -60,7 +60,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ddlChangeEvenet()
   {
-    console.log('Layout Dropdown event',this.roleid);
+   // console.log('Layout Dropdown event',this.roleid);
     this.selectedRole = this.roles.find(x => x.roleid === this.roleid)||{};
     this.authenticationService.activeRolefromPage(this.selectedRole);
   }
@@ -76,7 +76,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   setRole(r:Roles )
   {
-    console.log("layout setroles",r);
+    //console.log("layout setroles",r);
     this.authenticationService.activeRolefromPage(r);
   }
 }

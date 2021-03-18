@@ -1,55 +1,66 @@
-<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-between center"
-  fxLayoutAlign.lt-sm="space-between stretch">
-  <div fxFlex="35">
-    <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-      <mat-form-field fxFlex="49">
-        <mat-select [(value)]="ddlPeriodval" placeholder="Filter">
-          <mat-option value="{{r.id}}" *ngFor="let r of gridMaster.filtertype">{{ r.value }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field fxFlex="49">
-        <mat-select [(value)]="ddlyearVal" placeholder="Year">
-          <mat-option value="{{r.id}}" *ngFor="let r of gridMaster.year">{{ r.value }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+<form [formGroup]="fbGridSearch">
+
+  <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-between center"
+    fxLayoutAlign.lt-sm="space-between stretch">
+    <div fxFlex="35">
+      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <mat-form-field fxFlex="49">
+          <mat-select formControlName="ddlGridFilter" placeholder="Filter">
+            <mat-option value="{{r.id}}" *ngFor="let r of gridMaster.filtertype">{{ r.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="49">
+          <mat-select formControlName="ddlGridYear" placeholder="Year">
+            <mat-option value="{{r.id}}" *ngFor="let r of gridMaster.year">{{ r.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="pt20">
+      <mat-label>FX : </mat-label>
+      <mat-radio-group color="primary" formControlName="rdgfx">
+        <mat-radio-button value="{{r.id}}" *ngFor="let r of gridMaster.fx">{{ r.value }}
+        </mat-radio-button>
+      </mat-radio-group>
+
+    </div>
+    <div class="pt20">
+
+      <mat-label>USD : </mat-label>
+      <mat-radio-group color="primary" formControlName="rdgCurrency">
+        <mat-radio-button value="{{r.id}}" *ngFor="let r of gridMaster.dol">{{ r.value }}
+        </mat-radio-button>
+      </mat-radio-group>
+
+    </div>
+    <div class="pt20">
+      <button mat-icon-button color="primary" aria-label="Prev" (click)="prevPeriod()">
+        <mat-icon class="icon-lg">keyboard_arrow_left</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" aria-label="Next" (click)="nextPeriod()">
+        <mat-icon class="icon-lg">keyboard_arrow_right</mat-icon>
+      </button>
     </div>
   </div>
-  <div class="pt20">
-    <mat-label>FX : </mat-label>
-    <mat-radio-group color="primary" [(ngModel)]="rdFxVal">
-      <mat-radio-button value="{{r.id}}" *ngFor="let r of gridMaster.fx">{{ r.value }}
-      </mat-radio-button>
-    </mat-radio-group>
+</form>
 
-  </div>
-  <div class="pt20">
+<button (click)="test(1)">Test 1</button>
+<button (click)="test(2)">Test 2</button>
+<button (click)="test(3)">Assign 3</button>
+{{  test1?.val}}  &nbsp; {{test2?.val}}
 
-    <mat-label>USD : </mat-label>
-    <mat-radio-group color="primary" [(ngModel)]="rdCurval">
-      <mat-radio-button value="{{r.id}}" *ngFor="let r of gridMaster.dol">{{ r.value }}
-      </mat-radio-button>
-    </mat-radio-group>
-
-  </div>
-  <div class="pt20">
-    <button mat-icon-button color="primary" aria-label="Prev" (click)="prevPeriod()">
-      <mat-icon class="icon-lg">keyboard_arrow_left</mat-icon>
-    </button>
-    <button mat-icon-button color="primary" aria-label="Next" (click)="nextPeriod()">
-      <mat-icon class="icon-lg">keyboard_arrow_right</mat-icon>
-    </button>
-  </div>
-</div>
 <div class="table-container">
   <table class="table">
     <thead>
       <tr>
         <th>&nbsp;</th>
-        <th *ngFor="let row of gridMaster.header | callback:filtermonths; let i = index">
-          {{row.PeriodName}}
-        </th>
+        <ng-container *ngFor="let row of gridMaster.header | callback:filtermonths; let i = index">
+          <th>
+            {{row.PeriodName}}
+          </th>
+        </ng-container>
       </tr>
     </thead>
     <tbody>
@@ -57,22 +68,26 @@
 
         <ng-container *ngIf="desc.Type=='H'">
           <th>{{desc.Desc}}</th>
-          <th *ngFor="let pr of gridMaster.header | callback:filtermonths; let j = index">
-            <span *ngIf="desc.Type=='H'"></span>
-          </th>
+          <ng-container *ngFor="let pr of gridMaster.header; let j = index">
+            <th *ngIf="pr.Show">
+              <span *ngIf="desc.Type=='H'"></span>
+            </th>
+          </ng-container>
         </ng-container>
 
         <ng-container *ngIf="desc.Type!='H'">
           <td>{{desc.Desc}}</td>
-          <td *ngFor="let pr of gridMaster.header | callback:filtermonths; let j = index">
-            <span *ngIf="desc.Type!='H' && !gridloading && desc.Format=='$'"
-              title="{{getTableData(desc.DescID,pr.PeriodID,'Value') | currency}}">
-              {{getTableData(desc.DescID,pr.PeriodID,'Value')/rdCurval | currency}}</span>
-            <span *ngIf="desc.Type!='H' && !gridloading  && desc.Format=='%'"
-              title="{{getTableData(desc.DescID,pr.PeriodID,'Value') | percent:'1.2-6'}}">
-              {{getTableData(desc.DescID,pr.PeriodID,'Value') | percent:'1.2-2'}}</span>
-            <div class="tdloading" *ngIf="gridloading">&nbsp;</div>
-          </td>
+          <ng-container *ngFor="let pr of gridMaster.header | callback:filtermonths; let j = index">
+            <td  >
+              <span *ngIf="desc.Type!='H' && !gridloading && desc.Format=='$'"
+                title="{{getTableData(desc.DescID,pr.PeriodID,'Value') | currency}}">
+                {{getTableData(desc.DescID,pr.PeriodID,'Value') | currency}}</span>
+              <span *ngIf="desc.Type!='H' && !gridloading  && desc.Format=='%'"
+                title="{{getTableData(desc.DescID,pr.PeriodID,'Value') | percent:'1.2-6'}}">
+                {{getTableData(desc.DescID,pr.PeriodID,'Value') | percent:'1.2-2'}}</span>
+              <div class="tdloading" *ngIf="gridloading">&nbsp;</div>
+            </td>
+          </ng-container>
         </ng-container>
       </tr>
     </tbody>

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MasterDataService } from 'src/app/_services';
 
 @Component({
@@ -8,6 +9,7 @@ import { MasterDataService } from 'src/app/_services';
 })
 export class GridComponent implements OnInit {
 
+  public fbGridSearch!: FormGroup; 
   @Input() bgClass!: string;
   @Input() icon!: string;
   @Input() count!: number;
@@ -16,10 +18,10 @@ export class GridComponent implements OnInit {
   gridMaster:any={};
   griddata:any=[];
 
-  ddlPeriodval="";
-  ddlyearVal="";  
-  rdFxVal=""
-  rdCurval:number=1000; 
+  //ddlPeriodval="";
+  //ddlyearVal="";  
+  //rdFxVal=""
+  //rdCurval:number=1000; 
 
   minpriod=1;
   maxperiod=12;
@@ -28,9 +30,26 @@ export class GridComponent implements OnInit {
 
   gridloading:boolean=false;
  
-
+ test1:any={val:10};
+ test2:any={};
   
+ test(i:number)
+ {
+    if(i==1)
+    {
+      this.test1.val=15;
+    }
+    else if(i==2)
+    {
+      this.test2.val=25;
+    }
 
+    else if(i==3)
+    {
+      this.test2=this.test1;
+      
+    }
+ }
   updateLoading()
   {
     setTimeout((r:any)=> {
@@ -53,7 +72,7 @@ export class GridComponent implements OnInit {
       this.curmax=this.maxperiod;    
     }
 
-    this.griddata = this.griddata.map((i:any) => {
+    this.gridMaster.header = this.gridMaster.header.map((i:any) => {
        console.log('Next',i,this.minpriod,this.maxperiod,this.curminperiodid,this.curmax);
       if(i.PeriodType=='M' && i.PeriodID>=this.curminperiodid && i.PeriodID<=this.curmax )
       {
@@ -109,6 +128,7 @@ export class GridComponent implements OnInit {
   }
 
    filtermonths(user: any) {
+     console.log(user);
     return  user.Show;
   }
 
@@ -118,7 +138,7 @@ export class GridComponent implements OnInit {
    
     if(obj && obj[prop])
     {   
-       console.log(obj,obj[prop]);   
+       console.log(descid,prop, obj,obj[prop]);   
       return  obj[prop] ;
     }
     else 
@@ -129,9 +149,17 @@ export class GridComponent implements OnInit {
 
   }
   
-  constructor(private sessionservice: MasterDataService) {}
+  constructor(  private fb: FormBuilder,
+    private sessionservice: MasterDataService) {}
 
   ngOnInit() {
+
+    this.fbGridSearch = this.fb.group({
+      ddlGridFilter: [''],
+      ddlGridYear: [''],
+      rdgfx: [''],
+      rdgCurrency: ['']
+    });
 
     this.bindData();
     this.updateLoading();
@@ -140,15 +168,17 @@ export class GridComponent implements OnInit {
   bindData() {
     this.sessionservice.getPandLgridmaster({ horzid: '0' }).subscribe(s => {
       this.gridMaster = s;
-      if (this.gridMaster && this.gridMaster?.filtertype?.length > 0) {
-        this.ddlPeriodval = this.gridMaster.filtertype.find((f: any) => f.isdefault == true)?.id || '';
-      } 
+      // if (this.gridMaster && this.gridMaster?.filtertype?.length > 0) {
+      //   this.ddlPeriodval = this.gridMaster.filtertype.find((f: any) => f.isdefault == true)?.id || '';
+      // } 
 
       if (this.gridMaster) {
-        //this.ddlPeriodval = this.gridMaster.filtertype.find((f: any) => f.isdefault == true)?.id || '';
-       // this.ddlyearVal = this.gridMaster.year.find((f: any) => f.isdefault == true)?.id || '';
-       // this.rdFxVal = this.gridMaster.fx.find((f: any) => f.isdefault == true)?.id || '';
-       // this.rdCurval = this.gridMaster.dol.find((f: any) => f.isdefault == true)?.id || '';
+        this.fbGridSearch.patchValue({
+          ddlGridFilter:this.gridMaster.filtertype.find((f: any) => f.isdefault == true)?.id || '',
+          ddlGridYear: this.gridMaster.year.find((f: any) => f.isdefault == true)?.id || '' ,
+          rdgfx: this.gridMaster.fx.find((f: any) => f.isdefault == true)?.id || '',
+          rdgCurrency: this.gridMaster.dol.find((f: any) => f.isdefault == true)?.id || '',
+        }); 
       } 
 
     }); 

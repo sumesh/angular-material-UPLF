@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private sessionservice: MasterDataService) {
     this.subscription1 = this.sessionservice.commonSessionObjs.subscribe(r => {
-      console.log('contructor', r, this.sessionservice.commonSession);
+      //console.log('contructor', r, this.sessionservice.commonSession);
       this.getRole();
     });
   }
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onServicelineChanged(sid: any) {
-    console.log("PNL ", sid);
+   // console.log("PNL ", sid);
   }
 
   ngOnDestroy(): void {

@@ -19,10 +19,10 @@ export class AuthenticationService {
 
     constructor(private http: HttpClient) {
 
-        this.currentUserSubject = new BehaviorSubject<User>({});
+        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')||'{}'));
         this.currentUser = this.currentUserSubject.asObservable();
 
-        this.currentUserRolesSubject = new BehaviorSubject<Roles[]>([]);
+        this.currentUserRolesSubject = new BehaviorSubject<Roles[]>(JSON.parse(localStorage.getItem('roles')||'[]'));
         this.currentUserRoles = this.currentUserRolesSubject.asObservable();
 
         this.activeRoleSubject=new BehaviorSubject<Roles>({});
@@ -52,7 +52,7 @@ export class AuthenticationService {
 
                 if (user && user.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                   // localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
                 }
 
@@ -65,7 +65,7 @@ export class AuthenticationService {
             .pipe(map(roles => {
                 // login successful if there's a jwt token in the response 
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-               // localStorage.setItem('roles', JSON.stringify(roles));
+                localStorage.setItem('roles', JSON.stringify(roles));
                 this.currentUserRolesSubject.next(roles);
                 this.activeRoleSubject.next(roles[0]);
                 return roles;

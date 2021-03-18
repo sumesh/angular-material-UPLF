@@ -10,6 +10,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ServicelineComponent } from './serviceline/serviceline.component';
 import { CallbackPipe } from './filter/callback.filter';
+import { GridComponent } from './grid/grid.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   imports: [
@@ -22,11 +26,15 @@ import { CallbackPipe } from './filter/callback.filter';
     //Material
     MatFormFieldModule,
     MatSelectModule,
+    MatIconModule,  
+    MatRadioModule,
+    MatButtonModule,
   ],
 
   declarations: [
     PageNotFoundComponent,
     ServicelineComponent,
+    GridComponent,
     RouterTabs,
     RouterTab ,
     CallbackPipe   
@@ -41,6 +49,7 @@ import { CallbackPipe } from './filter/callback.filter';
     RouterTabs,
     RouterTab,
     ServicelineComponent,
+    GridComponent,
     CallbackPipe
   ]
 })

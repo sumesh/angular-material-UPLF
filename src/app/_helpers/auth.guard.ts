@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const currentUser = this.authenticationService.currentUserValue;
-        console.log("auth",currentUser);
+        
         if (currentUser && currentUser.token ) {
             // check if route is restricted by role
             // if (route.data.roles && route.data.roles.indexOf(currentUser.role) === -1) {
@@ -67,7 +67,7 @@ export class AuthGuardChild implements CanActivateChild {
   ): Observable<boolean> | Promise<boolean> | boolean {
   
     const currentUser = this.authenticationService.currentUserValue;
-    console.log("auth child",currentUser,currentUser.token);
+   // console.log("auth child",currentUser,currentUser.token);
       if (currentUser && currentUser.token) {
         // check if route is restricted by role
         // if (next.data.roles && next.data.roles.indexOf(currentUser.role) === -1) {

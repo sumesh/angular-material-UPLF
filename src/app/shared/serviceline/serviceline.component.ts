@@ -29,7 +29,7 @@ export class ServicelineComponent implements OnInit {
 
   getServiceline()
   {
-    console.log("Serviceline loading");
+    //console.log("Serviceline loading");
     this.masterdata.getServicelines().subscribe(s => {       
         this.servicelines = s;
       });
@@ -48,7 +48,7 @@ export class ServicelineComponent implements OnInit {
   toggleAllSelection() {
     this.selectAll = !this.selectAll;
     if (this.selectAll == true) {
-        console.log(this.servicelineIDs , this.servicelines.map(m=>m.horzid!.toString()))
+        //console.log(this.servicelineIDs , this.servicelines.map(m=>m.horzid!.toString()))
       this.servicelineIDs = this.servicelines.map(m=>m.horzid!.toString());
       this.servicelineIDs.push("0");
     } else {

@@ -1,3 +1,5 @@
+{{gridinput | json}}
+
 <form [formGroup]="fbGridSearch">
 
   <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-between center"
@@ -63,7 +65,7 @@
       <tr *ngFor="let desc of gridData.desc; let i = index" [ngClass]="{subhead: desc.type=='H'}">
 
         <ng-container *ngIf="desc.type=='H'">
-          <th style="width: 50px;">{{desc.desc}}</th>
+          <th>{{desc.desc}}</th>
           <ng-container *ngFor="let pr of gridData.header; let j = index">
             <th *ngIf="pr.show">
               <span></span>

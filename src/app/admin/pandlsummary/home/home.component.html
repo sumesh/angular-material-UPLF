@@ -8,7 +8,7 @@
   <div fxFlex="49" fxFlex.gt-md="30">
     <div fxLayout="row nowrap" fxLayout.lt-sm="column" fxLayoutAlign="space-between stretch">
       <mat-form-field fxFlex="49" >
-        <mat-select [(value)]="bucketTypeID">
+        <mat-select [(value)]="bucketTypeID" (selectionChange)="onddlBucketTypeChanged($event.value)">
           <mat-option value="{{r.id}}" *ngFor="let r of bucketlist">{{ r.value }}
           </mat-option>
         </mat-select>
@@ -53,5 +53,5 @@
   </div>
 </div>
 
-<app-gridbasic></app-gridbasic>
+<app-grid-basic [gridinput]="gridinput" #gridcomponent></app-grid-basic>
 <!-- <app-grid></app-grid> -->

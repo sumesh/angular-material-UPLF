@@ -1,21 +1,21 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { GridFilterType } from 'src/app/_models';
+import { GridFilterType, InputData } from 'src/app/_models';
 import { MasterDataService } from 'src/app/_services';
 
 @Component({
-  selector: 'app-gridbasic',
-  templateUrl: './grid.component.html',
-  styleUrls: ['./grid.component.scss']
+  selector: 'app-grid-basic',
+  templateUrl: './grid-basic.component.html',
+  styleUrls: ['./grid-basic.component.scss']
 })
-export class GridComponent implements OnInit {
+export class GridBasicComponent implements OnInit {
 
 
   @Input() gridFilter!: GridFilterType[];
-  @Input() icon!: string;
-  @Input() count!: number;
-  @Input() label!: string;
-  @Input() data!: number;
+  @Input() gridinput!:InputData;
+   
+
+
   gridMaster: any = {};
   gridData: any = {};
 
@@ -27,7 +27,7 @@ export class GridComponent implements OnInit {
   gridloading: boolean = false;
   filterDtls: any;
   displaycurrency: number = 1000;
-  displaymonths: number = 3;
+  displaymonths: number = 6;
   minpriod = 1;
   maxperiod = 12;
   startperiod = 1;
@@ -40,6 +40,7 @@ export class GridComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('OnInit Grid');
 
     this.fbGridSearch = this.fb.group({
       ddlGridFilter: ['', Validators.required],
@@ -49,16 +50,17 @@ export class GridComponent implements OnInit {
     });
 
 
-    this.bindMaster();
-    this.ngOnChanges();
-    this.updateLoading();
+    //
+     this.ngOnChangesEvents();
+   // this.updateLoading();
   }
 
 
-  ngOnChanges() {
+  ngOnChangesEvents() {
+    
     this.fbGridSearch.get("ddlGridFilter")!.valueChanges.subscribe(val => {
       
-      if (val) { 
+      if (!this.gridloading && val) { 
         this.displaymonths=val.maxmonth;
         this.startperiod=1;
         this.endperiod=val.maxmonth;
@@ -67,19 +69,19 @@ export class GridComponent implements OnInit {
     });
 
     this.fbGridSearch.get("ddlGridYear")!.valueChanges.subscribe(val => {
-      if (val) {
+      if (!this.gridloading && val) {
         this.bindData("year");
       }
     });
 
     this.fbGridSearch.get("rdgfx")!.valueChanges.subscribe(val => {
-      if (val) {
+      if (!this.gridloading &&  val) {
         this.bindData("rdgfx");
       }
     });
 
     this.fbGridSearch.get("rdgCurrency")!.valueChanges.subscribe(val => {
-      if (val) {
+      if (!this.gridloading &&  val) {
         this.displaycurrency = val;
       }
     });
@@ -93,9 +95,17 @@ export class GridComponent implements OnInit {
     return this.fbGridSearch.value;
   }
 
+  bindGrid()
+  {
+    console.log('grid',this.gridinput);
+    this.bindMaster();
+  }
+
 
   bindMaster() {
+    this.gridloading=true;
     this.sessionservice.getPandLgridmasterV2({ horzid: '0' }).subscribe(s => {
+
       this.gridMaster = s;
   
       if (this.gridMaster) {
@@ -106,7 +116,9 @@ export class GridComponent implements OnInit {
           rdgCurrency: this.gridMaster.default.dol
         });
       }
-
+       
+      this.gridloading = false;
+      
       let obj = this.filterValue;
       this.displaymonths = obj.ddlGridFilter.maxmonth;
       this.bindData('First');
@@ -164,7 +176,7 @@ export class GridComponent implements OnInit {
       this.endperiod = this.minpriod + this.displaymonths;
     }
 
-    this.setColumnsMonths(); 
+    this.setColumnsMonths();
 
    
     this.updateLoading();

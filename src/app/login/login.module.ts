@@ -9,6 +9,12 @@ import { MatInputModule } from '@angular/material/input';
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login/login.component';
+import { LayoutComponent } from './layout/layout.component';
+import { NoAccessComponent } from './noaccess/noaccess.component';
+import { ProxyComponent } from './proxy/proxy.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   imports: [
@@ -19,8 +25,11 @@ import { LoginComponent } from './login/login.component';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatSidenavModule,
     LoginRoutingModule
   ],
-  declarations: [LoginComponent]
+  declarations: [LoginComponent,LayoutComponent,NoAccessComponent,ProxyComponent]
 })
 export class LoginModule {}

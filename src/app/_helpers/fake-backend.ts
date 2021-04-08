@@ -10,14 +10,14 @@ import { D } from '@angular/cdk/keycodes';
 const users: User[] = [
     {
         id: 147852, username: '147852', firstName: 'Admin', role:
-            Role.Admin,
+            Role.Admin,isProxy:true,
         roles: [
             { roleid: 'RH001', rolename: 'Account Manager', roletype: 'VT' },
             { roleid: 'RH002', rolename: 'SLM', roletype: 'HZ' }
         ]
     },
     {
-        id: 369852, username: '369852', firstName: 'RHMS', role: Role.Admin,
+        id: 369852, username: '369852', firstName: 'RHMS', role: Role.Admin,isProxy:false,
         roles: [
             { roleid: 'RH003', rolename: 'Delivery Patner', roletype: 'VT' },
             { roleid: 'RH002', rolename: 'SLM', roletype: 'VT' }
@@ -374,7 +374,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function authenticate() {
             const { username, password } = body;
-            const user = users.find(x => x.username === username && x.password === password);
+            const user = users.find(x => x.username === username);
+            console.log(body,user,username);
             if (!user) return error('Username or password is incorrect');
 
             return ok({
@@ -383,6 +384,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 role: user.role,
+                isproxy:user.isProxy,
                 token: `fake-jwt-token.${user.id}`
             });
         }

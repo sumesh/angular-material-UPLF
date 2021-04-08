@@ -9,6 +9,7 @@ export class User {
     role?: Role;
     token?: string;
     roles?: Roles[];
+    isProxy?:boolean;
 }
 
 
@@ -42,6 +43,7 @@ export class GridFilterType {
     showyear?: boolean;
     showfx?: boolean;
     maxmonth?: number;
+    pagination?:number;
 }
 
 

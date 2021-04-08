@@ -14,6 +14,7 @@ import { GridComponent } from './grid/grid.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
+import { GridBasicComponent } from './grid-basic/grid-basic.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
     RouterModule, 
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
+    FlexLayoutModule, 
 
     //Material
     MatFormFieldModule,
@@ -34,6 +35,7 @@ import { MatButtonModule } from '@angular/material/button';
   declarations: [
     PageNotFoundComponent,
     ServicelineComponent,
+   GridBasicComponent,
     GridComponent,
     RouterTabs,
     RouterTab ,
@@ -50,6 +52,7 @@ import { MatButtonModule } from '@angular/material/button';
     RouterTab,
     ServicelineComponent,
     GridComponent,
+    GridBasicComponent,
     CallbackPipe
   ]
 })
